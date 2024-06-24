@@ -1,13 +1,24 @@
 
 let toDoLibrary = []
 
-const createProject = (projectName) => {
-    const newProject = projectName
+const List = class List {
+    constructor(name) {
+        this.name = name,
+        this.deleteTask = (taskNumber) => {
+            this.contents.push(this.contents.splice(taskNumber, 1)[0]);
+            this.contents.pop()
+        },
+        this.contents = []
+    }
+}
+
+const deleteTask = (task) => {
+
 }
 
 const createTask = class Task {
-    constructor(title,description,dueDate,priority) {
-        this.title = title,
+    constructor(name,description,dueDate,priority) {
+        this.name = name,
         this.description = description,
         this.dueDate = dueDate,
         this.priority = priority,
@@ -22,6 +33,4 @@ const appendTask = (task,parent) => {
     parent.push(task)
 }
 
-
-
-export { toDoLibrary, createTask, appendTask }
+export { toDoLibrary, createTask, appendTask, List }
