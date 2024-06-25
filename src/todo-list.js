@@ -1,5 +1,4 @@
 
-let toDoLibrary = []
 
 const List = class List {
     constructor(name) {
@@ -9,15 +8,15 @@ const List = class List {
             this.contents.pop()
         },
         this.contents = [],
+        // allows user to organize tasks and lists after appending them.
         this.transferTask = (taskNumber,newList) => {
-            newList.push(this.contents[taskNumber]);
+            newList.contents.push(this.contents[taskNumber]);
             this.deleteTask(taskNumber);
+        },
+        this.appendTask = (task) => {
+            this.contents.push(task)
         }
     }
-}
-
-const deleteTask = (task) => {
-
 }
 
 const createTask = class Task {
@@ -33,8 +32,6 @@ const createTask = class Task {
     }
 }
 
-const appendTask = (task,parent) => {
-    parent.push(task)
-}
+let toDoLibrary = new List('ToDo')
 
-export { toDoLibrary, createTask, appendTask, List }
+export { toDoLibrary, createTask, List }
