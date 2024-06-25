@@ -1,4 +1,6 @@
 import { createTask as Task, toDoLibrary, List} from "./todo-list";
+import { renderToDo, TO_DO_LIST } from "./DOM";
+import { createElement } from "./createElement";
 
 const makeBed = new Task('Make Bed','clean your bed','6/23/2023','high')
 const cleanDishes = new Task('Clean Dishes','','6/23/2023','high')
@@ -21,3 +23,9 @@ console.log(toDoLibrary)
 const driveToWork = new Task('Drive to Work','','6/24/2024','high')
 lifeTasks.appendTask(driveToWork)
 console.log(toDoLibrary)
+
+console.log(toDoLibrary.contents[0].contents[1])
+
+renderToDo(toDoLibrary, TO_DO_LIST)
+
+// createElement('li',toDoLibrary.contents[0].contents[1].name, TO_DO_LIST)
