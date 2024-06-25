@@ -8,7 +8,11 @@ const List = class List {
             this.contents.push(this.contents.splice(taskNumber, 1)[0]);
             this.contents.pop()
         },
-        this.contents = []
+        this.contents = [],
+        this.transferTask = (taskNumber,newList) => {
+            newList.push(this.contents[taskNumber]);
+            this.deleteTask(taskNumber);
+        }
     }
 }
 

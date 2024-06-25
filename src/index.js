@@ -14,3 +14,7 @@ appendTask(cleanDishes,myChores.contents)
 appendTask(washClothes,myChores.contents)
 
 console.log(toDoLibrary)
+
+lifeTasks.transferTask(0,toDoLibrary)
+
+console.log(toDoLibrary)
