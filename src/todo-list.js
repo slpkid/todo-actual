@@ -32,6 +32,6 @@ const createTask = class Task {
     }
 }
 
-let toDoLibrary = new List('ToDo')
+let TO_DO_LIBRARY = new List('ToDo')
 
-export { toDoLibrary, createTask, List }
+export { TO_DO_LIBRARY, createTask, List }
