@@ -27,7 +27,12 @@ const createTask = class Task {
         this.priority = priority,
         this.isComplete = false,
         this.completeTask = () => {
-            this.isComplete = true
+            if (this.isComplete == false) {
+                this.isComplete = true
+            } else {
+            if (this.isComplete == true) {
+                this.isComplete = false
+            }}
         }
     }
 }

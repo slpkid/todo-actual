@@ -1,5 +1,5 @@
 import { createElement, returnElementByID } from "./createElement"
-import { TO_DO_LIBRARY } from "./todo-list";
+import { TO_DO_LIBRARY as toDoLibrary } from "./todo-list";
 import { parseListPos } from "./evalString";
 
 const TO_DO_DOM = document.getElementById('to-do-library')
@@ -16,13 +16,14 @@ function renderToDo(toDo, parent, j = 0, weehoo = []) {
         toDo.contents.forEach(element => {
             weehoo[j] = i
             const listPos = `listPos${weehoo.join('++')}`
-            console.log(list)
-            console.log(parseListPos(listPos))
+            let parentList = toDo
+            // console.log(listPos)
+            // console.log(parseListPos(listPos))
             if (!element.contents) {
-                renderTask(element.name,parent,listPos)
+                renderTask(element.name,parent,listPos, element, parentList, i)
             } else {
-                const el = renderList(element.name,parent,listPos)
-                renderToDo(element, el, j+1,weehoo)
+                const el = renderList(element.name,parent,listPos, element, parentList, i)
+                renderToDo(element, el, j+1,weehoo, parentList)
                 weehoo.pop()
             }
             i++
@@ -31,7 +32,7 @@ function renderToDo(toDo, parent, j = 0, weehoo = []) {
 
 
 
-function renderList(listName, parent, id) {
+function renderList(listName, parent, id, element, parentList, i) {
     const list = createElement('ul',listName,parent,'',id)
 
     const hideButton = createElement('button','hide',list)
@@ -44,8 +45,7 @@ function renderList(listName, parent, id) {
     return list
 }
 
-function renderTask(taskName, parent, id) {
-    
+function renderTask(taskName, parent, id, element, parentList, i) {
     const task = createElement('li',taskName,parent,'',id)
 
     const deleteButton = createElement('button','x',task)
@@ -53,16 +53,27 @@ function renderTask(taskName, parent, id) {
     checkBox.type = 'checkbox'
 
     deleteButton.addEventListener('click', e => {
-        console.log('delete!')
-        console.log(task)
+        console.log(parentList.deleteTask(i))
+        unRenderDOM()
+        renderToDo(toDoLibrary, TO_DO_DOM)
+        // console.log(parent)
+        // console.log(element)
+        // console.log(task)
     })
 
     checkBox.addEventListener('click', e => {
-        console.log('checkbox!')
-        console.log(task)
+        element.completeTask()
+        // console.log(element)
+        // console.log(task)
     })
 
     return task
+}
+
+function unRenderDOM() {
+    while (TO_DO_DOM.firstChild) {
+        TO_DO_DOM.firstChild.remove()
+    }
 }
 
 
