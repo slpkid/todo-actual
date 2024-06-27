@@ -4,13 +4,18 @@ import { parseListPos } from "./evalString";
 
 const TO_DO_DOM = document.getElementById('to-do-library')
 
-function renderToDo(toDo, parent, j = 0, weehoo = []) {
+function renderToDo(toDo, parent, j = 0, weehoo = [], firstRan = false) {
     // this runs once to render the name of the list itself
+    
     const firstRun = (() => {
+        if (firstRan == false) {
         const el = createElement('ul',toDo.name,parent)
         parent = el
+        }
+        firstRan = true
     })();
-
+    
+    
         let i = 0
         
         toDo.contents.forEach(element => {
@@ -59,7 +64,7 @@ function renderTask(taskName, parent, id, element, parentList, i) {
     deleteButton.addEventListener('click', e => {
         console.log(parentList.deleteTask(i))
         unRenderDOM()
-        renderToDo(toDoLibrary, TO_DO_DOM)
+        renderToDo(toDo, parent)
         // console.log(parent)
         // console.log(element)
         // console.log(task)
