@@ -40,11 +40,18 @@ function renderToDo(toDo, parent, j = 0, weehoo = [], firstRan = false) {
 function renderList(listName, parent, id, element, parentList, i) {
     const list = createElement('ul',listName,parent,'',id)
 
+    const deleteButton = createElement('button','x',list)
     const hideButton = createElement('button','hide',list)
 
     hideButton.addEventListener('click', e => {
         console.log('hide contents!')
         console.log(list)
+    })
+
+    deleteButton.addEventListener('click', e => {
+        console.log(parentList.deleteTask(i))
+        unRenderDOM()
+        renderToDo(toDoLibrary, TO_DO_DOM)
     })
 
     return list
@@ -64,16 +71,11 @@ function renderTask(taskName, parent, id, element, parentList, i) {
     deleteButton.addEventListener('click', e => {
         console.log(parentList.deleteTask(i))
         unRenderDOM()
-        renderToDo(toDo, parent)
-        // console.log(parent)
-        // console.log(element)
-        // console.log(task)
+        renderToDo(toDoLibrary, TO_DO_DOM)
     })
 
     checkBox.addEventListener('click', e => {
         element.completeTask()
-        // console.log(element)
-        // console.log(task)
     })
 
     return task
