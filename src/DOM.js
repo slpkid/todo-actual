@@ -52,6 +52,10 @@ function renderTask(taskName, parent, id, element, parentList, i) {
     const checkBox = createElement('input','',task)
     checkBox.type = 'checkbox'
 
+    if (element.isComplete == true) {
+        checkBox.checked = true
+    }
+
     deleteButton.addEventListener('click', e => {
         console.log(parentList.deleteTask(i))
         unRenderDOM()
