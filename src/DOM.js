@@ -36,16 +36,16 @@ function renderToDo(toDo, parent, j = 0, weehoo = [], firstRan = false) {
 }
 
 // creates a button to create new tasks or lists 
-function addButton(parent, parentList) {
+function addButton(parent, element) {
     const addButton = createElement('button','+',parent)
 
     addButton.addEventListener('click', e => {
         const queryItem = prompt('Create new list?')
         if (queryItem === 'yes') {
-            parentList.appendTask(new List(prompt('Enter desired list name.')))
+            element.appendTask(new List(prompt('Enter desired list name.')))
             console.log(toDoLibrary)
         } else {
-            parentList.appendTask(new Task(
+            element.appendTask(new Task(
                 prompt('Enter Task Name.'),
                 prompt('Enter Description.'),
                 prompt('Enter Due Date.'),
@@ -121,6 +121,7 @@ function renderList(listName, parent, id, element, parentList, i) {
 
     hideButton(list)
     deleteButton(list, parentList, i)
+    addButton(list, element)
 
     return list
 }
