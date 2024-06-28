@@ -14,6 +14,9 @@ const myChores = new List('Chores')
 const lifeTasks = new List('Life Tasks')
 const workTasks = new List('Work Tasks')
 
+const miscTask1 = new Task('Eat Second Breakfast','','6/23/2023','high')
+const miscTask2 = new Task('Eat Afternoon Snack','','6/23/2023','high')
+
 toDoLibrary.appendTask(lifeTasks)
 lifeTasks.appendTask(myChores)
 lifeTasks.appendTask(driveToWork)
@@ -21,10 +24,13 @@ myChores.appendTask(makeBed)
 myChores.appendTask(cleanDishes)
 myChores.appendTask(washClothes)
 lifeTasks.appendTask(ironClothes)
+toDoLibrary.appendTask(miscTask1)
+toDoLibrary.appendTask(miscTask2)
 toDoLibrary.appendTask(workTasks)
 workTasks.appendTask(goToLunch)
 workTasks.appendTask(submitReports)
 workTasks.appendTask(clockOut)
+
 
 
 console.log(toDoLibrary)
