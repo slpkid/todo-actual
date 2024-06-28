@@ -96,9 +96,41 @@ function showDetailsButton() {
 
 }
 
-// allows user to rearrange tasks and lists
-function moveButton() {
+let moveTarget
+let moveTargetParentList
+let moveTargetDestination
 
+// allows user to rearrange tasks and lists
+function moveButton(DOM_Node, i, parentListElement, element) {
+    let listOrTask
+    if (element.contents) {
+        listOrTask = 'listMoveButton'
+    } else {
+        listOrTask = 'taskMoveButton'
+    }
+    const moveButton = createElement('button', 'move', DOM_Node,[`${listOrTask}`])
+    moveButton.addEventListener('click', e => {
+        const hideTaskButtons = document.querySelectorAll('.taskMoveButton')
+        console.log(hideTaskButtons)
+        if (moveTarget === undefined) {
+            moveTarget = i
+            moveTargetParentList = parentListElement
+            hideTaskButtons.forEach(button => {
+                button.style.display = 'none'
+            })
+        } else {
+            moveTargetDestination = element
+            moveTargetParentList.transferTask(moveTarget,moveTargetDestination)
+            unRenderDOM()
+            renderToDo(toDoLibrary, TO_DO_DOM)
+            moveTarget = undefined
+            moveTargetParentList = undefined
+            moveTargetDestination = undefined
+            hideTaskButtons.forEach(button => {
+                button.style.display = ''
+            })
+        }
+    })
 }
 
 function hideButton(parent) {
@@ -122,16 +154,18 @@ function renderList(listName, parent, id, element, parentList, i) {
     hideButton(list)
     deleteButton(list, parentList, i)
     addButton(list, element)
+    moveButton(list, i, parentList, element)
 
     return list
 }
 
 // Task rendering function
 function renderTask(taskName, parent, id, element, parentList, i) {
-    const task = createElement('li',taskName,parent,['child'],id)
+    const task = createElement('ul',taskName,parent,['child'],id)
     
     deleteButton(task, parentList, i)
     checkBox(task, element)
+    moveButton(task, i, parentList, element)
 
     return task
 }
