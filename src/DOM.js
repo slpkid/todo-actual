@@ -1,6 +1,7 @@
 import { createElement, returnElementByID } from "./createElement"
 import { TO_DO_LIBRARY as toDoLibrary } from "./todo-list";
 import { parseListPos } from "./evalString";
+import { List, createTask as Task } from "./todo-list";
 
 const TO_DO_DOM = document.getElementById('to-do-library')
 
@@ -11,7 +12,7 @@ function renderToDo(toDo, parent, j = 0, weehoo = [], firstRan = false) {
         if (firstRan == false) {
         const el = createElement('ul',toDo.name,parent)
         parent = el
-        addButton(el)
+        addButton(el, toDo)
         }
         firstRan = true
     })();
@@ -35,11 +36,24 @@ function renderToDo(toDo, parent, j = 0, weehoo = [], firstRan = false) {
 }
 
 // creates a button to create new tasks or lists 
-function addButton(parent) {
+function addButton(parent, parentList) {
     const addButton = createElement('button','+',parent)
 
     addButton.addEventListener('click', e => {
-        console.log('add something')
+        const queryItem = prompt('Create new list?')
+        if (queryItem === 'yes') {
+            parentList.appendTask(new List(prompt('Enter desired list name.')))
+            console.log(toDoLibrary)
+        } else {
+            parentList.appendTask(new Task(
+                prompt('Enter Task Name.'),
+                prompt('Enter Description.'),
+                prompt('Enter Due Date.'),
+                prompt('Choose Priority.')
+            ))
+        }
+        unRenderDOM()
+        renderToDo(toDoLibrary, TO_DO_DOM)
     })
 
     return addButton
