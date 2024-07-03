@@ -2,13 +2,13 @@ import { createTask as Task, TO_DO_LIBRARY as toDoLibrary, List} from "./todo-li
 import { renderToDo, TO_DO_DOM } from "./DOM";
 
 const makeBed = new Task('Make Bed','clean your bed','6/23/2023','high')
-const cleanDishes = new Task('Clean Dishes','','6/23/2023','high')
-const washClothes = new Task('Wash Clothes','','6/23/2023','high')
-const driveToWork = new Task('Drive to Work','','6/24/2024','high')
-const ironClothes = new Task('Iron Clothes','','6/23/2023','high')
-const goToLunch = new Task('Go to Lunch','','6/23/2023','high')
-const submitReports = new Task('Submit Reports','','6/23/2023','high')
-const clockOut = new Task('Clock Out','','6/23/2023','high')
+const cleanDishes = new Task('Clean Dishes','Load dishes into dishwasher and run the load.','6/23/2023','high')
+const washClothes = new Task('Wash Clothes','Load washing machine and run a cycle','6/23/2023','high')
+const driveToWork = new Task('Drive to Work','Get in your car and drive down the freeway','6/24/2024','high')
+const ironClothes = new Task('Iron Clothes','Iron three shirts','6/23/2023','high')
+const goToLunch = new Task('Go to Lunch','Eat lunch at Drafty\'s Burgers','6/23/2023','high')
+const submitReports = new Task('Submit Reports','submit the reports by three o\'clock','6/23/2023','high')
+const clockOut = new Task('Clock Out','Go home','6/23/2023','high')
 
 const myChores = new List('Chores')
 const lifeTasks = new List('Life Tasks')
@@ -31,21 +31,4 @@ workTasks.appendTask(goToLunch)
 workTasks.appendTask(submitReports)
 workTasks.appendTask(clockOut)
 
-
-
-console.log(toDoLibrary)
-const firstGuy = toDoLibrary
-
-const guy = eval(`firstGuy.contents[0].contents[0].contents[0]`)
-
-const otherGuy = toDoLibrary.contents[0].contents[0].contents[0]
-
-console.log(guy)
-
-// console.log(newGuy)
-
-console.log(otherGuy)
-
 renderToDo(toDoLibrary, TO_DO_DOM)
-
-// createElement('li',TO_DO_LIBRARY.contents[0].contents[1].name, TO_DO_LIST)
