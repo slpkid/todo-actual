@@ -90,8 +90,51 @@ function editButton() {
 }
 
 // shows or hides details about each list or task
-function showDetailsButton() {
+function showDetailsButton(DOM_Node, listElement) {
+    const details = createElement('p','details',DOM_Node)
+    const detailsButton = createElement('button','+',details)
+    let showDetails = false
+    let detailsArray = []
 
+    if (listElement.description) {
+        const description = createElement('p',`${listElement.description}`,details)
+        detailsArray.push(description)
+    }
+
+    if (listElement.dueDate) {
+        const dueDate = createElement('p',`${listElement.dueDate}`,details)
+        detailsArray.push(dueDate)
+    }
+
+    if (listElement.priority) {
+        const priority = createElement('p',`${listElement.priority}`,details)
+        detailsArray.push(priority)
+    }
+
+    if (listElement.isComplete) {
+        const isComplete = createElement('p',`${listElement.isComplete}`,details)
+        detailsArray.push(isComplete)
+    }
+
+    detailsArray.forEach ( e => {
+        e.style.display = 'none'
+    })
+
+    detailsButton.addEventListener('click', e => {
+        if (showDetails === false) {
+            detailsButton.textContent = '-'
+            showDetails = true
+            detailsArray.forEach ( e => {
+                e.style.display = ''
+            })
+        } else {
+            detailsButton.textContent = '+'
+            showDetails = false
+            detailsArray.forEach ( e => {
+                e.style.display = 'none'
+            })
+        }
+    })
 }
 
 let moveTarget
@@ -121,6 +164,7 @@ function moveButton(DOM_Node, i, parentListElement, element) {
             taskMoveButtons.forEach(button => {
                 button.style.display = 'none'
             })
+
             return
         } else {
             // on the second call, set the chosen element as the destination
@@ -191,29 +235,30 @@ function hideButton(parent) {
 }
 
 //List rendering function
-function renderList(listName, parent, id, element, parentList, i) {
+function renderList(listName, parent, id, listElement, parentList, i) {
     const list = createElement('ul',listName,parent,['child'],id)
 
-    addButton(list, element)
+    addButton(list, listElement)
     deleteButton(list, parentList, i)
-    moveButton(list, i, parentList, element)
+    moveButton(list, i, parentList, listElement)
     hideButton(list)
     
     return list
 }
 
 // Task rendering function
-function renderTask(taskName, parent, id, element, parentList, i) {
+function renderTask(taskName, parent, id, listElement, parentList, i) {
     const task = createElement('ul',taskName,parent,['child'],id)
 
     
-    checkBox(task, element)
+    checkBox(task, listElement)
     deleteButton(task, parentList, i)
-    moveButton(task, i, parentList, element)
+    moveButton(task, i, parentList, listElement)
     hideButton(task)
+    showDetailsButton(task, listElement)
     
-    const details = createElement('p',
-    `${element.description}`,task,['child'])
+    // const details = createElement('p',
+    // `${element.description}`,task,['child'])
 
 
     return task
