@@ -97,23 +97,32 @@ function showDetailsButton(DOM_Node, listElement) {
     let detailsArray = []
 
     if (listElement.description) {
-        const description = createElement('p',`${listElement.description}`,details)
+        const description = createElement('p',`Description: ${listElement.description}`,details)
         detailsArray.push(description)
     }
 
     if (listElement.dueDate) {
-        const dueDate = createElement('p',`${listElement.dueDate}`,details)
+        const dueDate = createElement('p',`Complete By: ${listElement.dueDate}`,details)
         detailsArray.push(dueDate)
     }
 
     if (listElement.priority) {
-        const priority = createElement('p',`${listElement.priority}`,details)
+        const priority = createElement('p',`Priority: ${listElement.priority}`,details)
         detailsArray.push(priority)
     }
 
-    if (listElement.isComplete) {
-        const isComplete = createElement('p',`${listElement.isComplete}`,details)
+    
+
+    if (listElement.isComplete === false || listElement.isComplete === true) {
+        let completionStatus
+        if (listElement.isComplete === false) {
+            completionStatus = 'Incomplete'
+        } else {
+            completionStatus = 'Completed!'
+        }
+        const isComplete = createElement('p',`${completionStatus}`,details)
         detailsArray.push(isComplete)
+        console.log(isComplete)
     }
 
     detailsArray.forEach ( e => {
