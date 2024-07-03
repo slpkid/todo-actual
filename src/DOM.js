@@ -122,7 +122,6 @@ function showDetailsButton(DOM_Node, listElement) {
         }
         const isComplete = createElement('p',`${completionStatus}`,details)
         detailsArray.push(isComplete)
-        console.log(isComplete)
     }
 
     detailsArray.forEach ( e => {
