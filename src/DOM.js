@@ -81,6 +81,8 @@ function checkBox(task, element) {
     // calls function to toggle completion status
     checkBox.addEventListener('click', e => {
         element.completeTask()
+        unRenderDOM()
+        renderToDo(toDoLibrary, TO_DO_DOM)
     })
 }
 
@@ -110,8 +112,6 @@ function showDetailsButton(DOM_Node, listElement) {
         const priority = createElement('p',`Priority: ${listElement.priority}`,details)
         detailsArray.push(priority)
     }
-
-    
 
     if (listElement.isComplete === false || listElement.isComplete === true) {
         let completionStatus
