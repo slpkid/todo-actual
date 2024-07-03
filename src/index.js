@@ -31,4 +31,10 @@ workTasks.appendTask(goToLunch)
 workTasks.appendTask(submitReports)
 workTasks.appendTask(clockOut)
 
+miscTask1.editDetails('Don\'t eat second breakfast','','7/23/2024','low')
+
+myChores.editName('Boring Chores')
+
+toDoLibrary.editTask(2, 'Don\'t eat afternoon snack','','2/23/7272','medium')
+
 renderToDo(toDoLibrary, TO_DO_DOM)

@@ -87,8 +87,8 @@ function checkBox(task, element) {
 }
 
 //allows user to edit details
-function editButton() {
-
+function editButton(DOM_Node, detailsArray) {
+    
 }
 
 // shows or hides details about each list or task
@@ -143,6 +143,8 @@ function showDetailsButton(DOM_Node, listElement) {
             })
         }
     })
+
+    return detailsArray
 }
 
 let moveTarget

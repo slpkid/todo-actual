@@ -16,6 +16,12 @@ const List = class List {
         this.appendTask = (task) => {
             this.contents.push(task)
         }
+        this.editName = (newName) => {
+            this.name = newName
+        }
+        this.editTask = (taskNumber, name, description, dueDate, priority) => {
+            this.contents[taskNumber].editDetails(name, description, dueDate, priority)
+        }
     }
 }
 
@@ -33,6 +39,12 @@ const createTask = class Task {
             if (this.isComplete == true) {
                 this.isComplete = false
             }}
+        }
+        this.editDetails = (name, description, dueDate, priority) => {
+            this.name = name,
+            this.description = description,
+            this.dueDate = dueDate,
+            this.priority = priority
         }
     }
 }
