@@ -78,6 +78,9 @@ function checkBox(DOM_Node, listElement) {
     if (listElement.isComplete == true) {
         checkBox.checked = true
     }
+    if (listElement.isComplete == false) {
+        checkBox.checked = false
+    }
     // calls function to toggle completion status
     checkBox.addEventListener('click', e => {
         listElement.completeTask()
@@ -148,7 +151,13 @@ function editButton(DOM_Node, listElement, detailsArray) {
             const description = DOM_Node.querySelector('.description').value
             const dueDate = DOM_Node.querySelector('.due-date').value
             const priority = DOM_Node.querySelector('.priority').value
-            const isComplete = DOM_Node.querySelector('.completion').value
+            let isComplete
+            if (DOM_Node.querySelector('.completion').value === 'Completed!') {
+                isComplete = true
+            }
+            if (DOM_Node.querySelector('.completion').value === 'Incomplete'){
+                isComplete = false
+            }
             listElement.editDetails(name,description,dueDate,priority,isComplete)
 
             isEditing = false

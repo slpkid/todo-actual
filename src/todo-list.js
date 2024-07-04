@@ -40,11 +40,12 @@ const createTask = class Task {
                 this.isComplete = false
             }}
         }
-        this.editDetails = (name, description, dueDate, priority) => {
+        this.editDetails = (name, description, dueDate, priority,isComplete) => {
             this.name = name,
             this.description = description,
             this.dueDate = dueDate,
-            this.priority = priority
+            this.priority = priority,
+            this.isComplete = isComplete
         }
     }
 }
