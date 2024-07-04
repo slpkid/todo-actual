@@ -87,30 +87,96 @@ function checkBox(DOM_Node, listElement) {
 }
 
 //allows user to edit details
-function editButton(DOM_Node, listElement) {
+function editButton(DOM_Node, listElement, detailsArray) {
+    const editButton = createElement('button','edit',DOM_Node)
+    const editArray = DOM_Node.querySelectorAll('.details')
     
+    // render each p element as an input
+    let isEditing = false
+    editButton.addEventListener('click', e => {
+        if (isEditing === false) {
+            editArray.forEach ( e => {
+                e.remove()
+            })
+
+            createElement('p','Name: ',DOM_Node,['details'])
+            const name = createElement('input',`${listElement.name}`,DOM_Node,['details','name'])
+            name.value = listElement.name
+
+            createElement('p','Description: ',DOM_Node,['details'])
+            const description = createElement('input',`${listElement.description}`,DOM_Node,['details','description','edit'])
+            description.value = listElement.description
+            
+            createElement('p','Complete By: ',DOM_Node,['details'])
+            const dueDate = createElement('input',`${listElement.dueDate}`,DOM_Node,['details','due-date','edit'])
+            dueDate.value = listElement.dueDate
+            
+            createElement('p','Priority: ',DOM_Node,['details'])
+            const priority = createElement('select',`${listElement.priority}`,DOM_Node,['details','priority','edit'])
+            priority.value = listElement.priority
+
+            //create the drop down list for priority
+            const low = createElement('option','low',priority)
+            low.value = 'low'
+            const normal = createElement('option','normal',priority)
+            normal.value = 'normal'
+            const high = createElement('option','high',priority)
+            high.value = 'high'
+            const urgent = createElement('option','urgent',priority)
+            urgent.value = 'urgent'            
+            createElement('p','Completion Status:',DOM_Node,['details'])
+            let completionStatus
+            if (listElement.isComplete === false) {
+                completionStatus = 'Incomplete'
+            } else {
+                completionStatus = 'Completed!'
+            }
+
+            //create the drop down list for completion status
+            const isComplete = createElement('select',`${completionStatus}`,DOM_Node,['details','completion','edit'])
+            isComplete.setAttribute('list','complete-list')
+            const completed = createElement('option','Completed!',isComplete)
+            completed.value = 'Completed!'
+            const incomplete = createElement('option','Incomplete',isComplete)
+            incomplete.value = 'Incomplete'
+            isComplete.value = completionStatus
+
+            isEditing = true
+            return
+        } else if (isEditing === true) {
+            const name = DOM_Node.querySelector('.name').value
+            const description = DOM_Node.querySelector('.description').value
+            const dueDate = DOM_Node.querySelector('.due-date').value
+            const priority = DOM_Node.querySelector('.priority').value
+            const isComplete = DOM_Node.querySelector('.completion').value
+            listElement.editDetails(name,description,dueDate,priority,isComplete)
+
+            isEditing = false
+            unRenderDOM()
+            renderToDo(toDoLibrary, TO_DO_DOM)
+        }
+    })
 }
 
 // shows or hides details about each list or task
 function showDetailsButton(DOM_Node, listElement) {
-    const details = createElement('p','details',DOM_Node)
+    const details = createElement('p','details',DOM_Node,['details'])
     const detailsButton = createElement('button','+',details)
     let showDetails = false
-    let detailsArray = []
 
     if (listElement.description) {
-        const description = createElement('p',`Description: ${listElement.description}`,details)
-        detailsArray.push(description)
+        createElement('p','Description: ',details,['details'])
+        const description = createElement('p',`${listElement.description}`,details,['details','description','edit'])
     }
 
     if (listElement.dueDate) {
-        const dueDate = createElement('p',`Complete By: ${listElement.dueDate}`,details)
-        detailsArray.push(dueDate)
+        createElement('p','Complete By: ',details,['details'])
+        const dueDate = createElement('p',`${listElement.dueDate}`,details,['details','due-date','edit'])
     }
 
     if (listElement.priority) {
-        const priority = createElement('p',`Priority: ${listElement.priority}`,details)
-        detailsArray.push(priority)
+        createElement('p','Priority: ',details,['details'])
+        const priority = createElement('p',`${listElement.priority}`,details,['details','priority','edit'])
     }
 
     if (listElement.isComplete === false || listElement.isComplete === true) {
@@ -120,29 +186,33 @@ function showDetailsButton(DOM_Node, listElement) {
         } else {
             completionStatus = 'Completed!'
         }
-        const isComplete = createElement('p',`${completionStatus}`,details)
-        detailsArray.push(isComplete)
+        const isComplete = createElement('p',`${completionStatus}`,details,['details','completion','edit'])
     }
+
+    const detailsArray = details.querySelectorAll('.details')
 
     detailsArray.forEach ( e => {
         e.style.display = 'none'
     })
 
     detailsButton.addEventListener('click', e => {
+        const hideArray = details.querySelectorAll('.details')
         if (showDetails === false) {
             detailsButton.textContent = '-'
             showDetails = true
-            detailsArray.forEach ( e => {
+            hideArray.forEach ( e => {
                 e.style.display = ''
             })
         } else {
             detailsButton.textContent = '+'
             showDetails = false
-            detailsArray.forEach ( e => {
+            hideArray.forEach ( e => {
                 e.style.display = 'none'
             })
         }
     })
+    editButton(details,listElement, detailsArray)
+
 
     return detailsArray
 }
@@ -266,7 +336,6 @@ function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElemen
     moveButton(task, i, parentListElement, listElement)
     hideButton(task)
     showDetailsButton(task, listElement)
-    editButton()
     
     // const details = createElement('p',
     // `${element.description}`,task,['child'])
