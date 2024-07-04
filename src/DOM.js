@@ -72,7 +72,7 @@ function deleteButton(DOM_Node, parentListElement, i) {
 
 // creates a checkbox for tasks to be updated with their completion status
 function checkBox(DOM_Node, listElement) {
-    const checkBox = createElement('input','',DOM_Node)
+    const checkBox = createElement('input','',DOM_Node,['checkbox'])
     // check to see if task has been completed, if yes then render as checked
     checkBox.type = 'checkbox'    
     if (listElement.isComplete == true) {
@@ -90,7 +90,7 @@ function checkBox(DOM_Node, listElement) {
 }
 
 //allows user to edit details
-function editButton(DOM_Node, listElement, detailsArray) {
+function editButton(DOM_Node, listElement, parent_DOM_Node) {
     const editButton = createElement('button','edit',DOM_Node)
     const editArray = DOM_Node.querySelectorAll('.details')
     
@@ -102,9 +102,26 @@ function editButton(DOM_Node, listElement, detailsArray) {
                 e.remove()
             })
 
-            createElement('p','Name: ',DOM_Node,['details'])
-            const name = createElement('input',`${listElement.name}`,DOM_Node,['details','name'])
+            // createElement('p','Name: ',DOM_Node,['details'])
+            parent_DOM_Node.querySelector('.name').style.display = 'none'
+            
+            // parent_DOM_Node.remove()
+            // const name = createElement('input',`${listElement.name}`,'',['details','name'])
+            const name = document.createElement('input')
+            const checkbox = parent_DOM_Node.querySelector('.checkbox')
+            name.textContent = listElement.name
+            name.classList.add('details')
+            name.classList.add('name')
+            name.classList.add('edit-name')
+            checkbox.before(name)
             name.value = listElement.name
+
+            
+            // parent_DOM_Node.visibility = 'hidden'
+
+            // parent_DOM_Node.childNodes.forEach( e => {
+            //     console.log(e)
+            // })
 
             createElement('p','Description: ',DOM_Node,['details'])
             const description = createElement('input',`${listElement.description}`,DOM_Node,['details','description','edit'])
@@ -145,9 +162,10 @@ function editButton(DOM_Node, listElement, detailsArray) {
             isComplete.value = completionStatus
 
             isEditing = true
+
             return
         } else if (isEditing === true) {
-            const name = DOM_Node.querySelector('.name').value
+            const name = parent_DOM_Node.querySelector('.edit-name').value
             const description = DOM_Node.querySelector('.description').value
             const dueDate = DOM_Node.querySelector('.due-date').value
             const priority = DOM_Node.querySelector('.priority').value
@@ -220,7 +238,7 @@ function showDetailsButton(DOM_Node, listElement) {
             })
         }
     })
-    editButton(details,listElement, detailsArray)
+    editButton(details, listElement, DOM_Node)
 
 
     return detailsArray
@@ -326,21 +344,29 @@ function hideButton(DOM_Node) {
 //List rendering function
 function renderList(listName, parent_DOM_Node, id, listElement, parentListElement, i) {
     const list = createElement('ul',listName,parent_DOM_Node,['child'],id)
-
+    
     addButton(list, listElement)
     deleteButton(list, parentListElement, i)
     moveButton(list, i, parentListElement, listElement)
     hideButton(list)
-    
+  
     return list
 }
 
 // Task rendering function
 function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElement, i) {
-    const task = createElement('ul',taskName,parent_DOM_Node,['child'],id)
+    const task = createElement('ul','',parent_DOM_Node,['child'],id)
 
     
     checkBox(task, listElement)
+
+    const name = document.createElement('span')
+    const checkbox = task.querySelector('.checkbox')
+    name.textContent = listElement.name
+    name.classList.add('details')
+    name.classList.add('name')
+    checkbox.before(name)  
+
     deleteButton(task, parentListElement, i)
     moveButton(task, i, parentListElement, listElement)
     hideButton(task)
@@ -348,6 +374,7 @@ function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElemen
     
     // const details = createElement('p',
     // `${element.description}`,task,['child'])
+
 
 
     return task
