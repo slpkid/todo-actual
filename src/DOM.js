@@ -5,45 +5,45 @@ import { List, createTask as Task } from "./todo-list";
 
 const TO_DO_DOM = document.getElementById('to-do-library')
 
-function renderToDo(toDo, parent, j = 0, weehoo = [], firstRan = false) {
+function renderToDo(listElement, parent_DOM_Node, j = 0, idArray = [], firstRan = false) {
     let i = 0
 
     // this runs once to render the name of the parent to do list     
     const firstRun = (() => {
         if (firstRan == false) {
-        const el = createElement('ul',toDo.name,parent)
-        parent = el
-        addButton(el, toDo)
+        const DOM_TO_DO_ELEMENT = createElement('ul',listElement.name,parent_DOM_Node)
+        parent_DOM_Node = DOM_TO_DO_ELEMENT
+        addButton(DOM_TO_DO_ELEMENT, listElement)
         }
         firstRan = true
     })();
         
-    toDo.contents.forEach(element => {
-        weehoo[j] = i
-        const listPos = `listPos${weehoo.join('++')}`
-        let parentList = toDo
+    listElement.contents.forEach(element => {
+        idArray[j] = i
+        const listPos = `listPos${idArray.join('++')}`
+        let parentList = listElement
         if (!element.contents) {
-            renderTask(element.name, parent, listPos, element, parentList, i)
+            renderTask(element.name, parent_DOM_Node, listPos, element, parentList, i)
         } else {
-            const el = renderList(element.name, parent, listPos, element, parentList, i)
-            renderToDo(element, el, j + 1, weehoo, parentList)
-            weehoo.pop()
+            const el = renderList(element.name, parent_DOM_Node, listPos, element, parentList, i)
+            renderToDo(element, el, j + 1, idArray, parentList)
+            idArray.pop()
         }
         i++
     })
 }
 
 // creates a button to create new tasks or lists 
-function addButton(parent, element) {
-    const addButton = createElement('button','+',parent)
+function addButton(DOM_Node, listElement) {
+    const addButton = createElement('button','+',DOM_Node)
 
     addButton.addEventListener('click', e => {
         const queryItem = prompt('Create new list?')
         if (queryItem === 'yes') {
-            element.appendTask(new List(prompt('Enter desired list name.')))
+            listElement.appendTask(new List(prompt('Enter desired list name.')))
             console.log(toDoLibrary)
         } else {
-            element.appendTask(new Task(
+            listElement.appendTask(new Task(
                 prompt('Enter Task Name.'),
                 prompt('Enter Description.'),
                 prompt('Enter Due Date.'),
@@ -58,11 +58,11 @@ function addButton(parent, element) {
 }
 
 // creates a delete button to delete a task or list
-function deleteButton(parent, parentList, i) {
-    const deleteButton = createElement('button','x',parent)
+function deleteButton(DOM_Node, parentListElement, i) {
+    const deleteButton = createElement('button','x',DOM_Node)
     deleteButton.addEventListener('click', e => {
         //executes method off of parent object to delete requested item
-        parentList.deleteTask(i)
+        parentListElement.deleteTask(i)
         // clear DOM, then render
         unRenderDOM()
         renderToDo(toDoLibrary, TO_DO_DOM)
@@ -71,23 +71,23 @@ function deleteButton(parent, parentList, i) {
 }
 
 // creates a checkbox for tasks to be updated with their completion status
-function checkBox(task, element) {
-    const checkBox = createElement('input','',task)
+function checkBox(DOM_Node, listElement) {
+    const checkBox = createElement('input','',DOM_Node)
     // check to see if task has been completed, if yes then render as checked
     checkBox.type = 'checkbox'    
-    if (element.isComplete == true) {
+    if (listElement.isComplete == true) {
         checkBox.checked = true
     }
     // calls function to toggle completion status
     checkBox.addEventListener('click', e => {
-        element.completeTask()
+        listElement.completeTask()
         unRenderDOM()
         renderToDo(toDoLibrary, TO_DO_DOM)
     })
 }
 
 //allows user to edit details
-function editButton(DOM_Node, detailsArray) {
+function editButton(DOM_Node, listElement) {
     
 }
 
@@ -228,10 +228,10 @@ function moveButton(DOM_Node, i, parentListElement, element) {
     })
 }
 
-function hideButton(parent) {
-    const hideButton = createElement('button','hide',parent)
+function hideButton(DOM_Node) {
+    const hideButton = createElement('button','hide',DOM_Node)
     hideButton.addEventListener('click', e => {
-      const children = parent.querySelectorAll('.child')
+      const children = DOM_Node.querySelectorAll('.child')
       children.forEach( child => {
         if (!child.style.display) {
           child.style.display = 'none'
@@ -245,27 +245,28 @@ function hideButton(parent) {
 }
 
 //List rendering function
-function renderList(listName, parent, id, listElement, parentList, i) {
-    const list = createElement('ul',listName,parent,['child'],id)
+function renderList(listName, parent_DOM_Node, id, listElement, parentListElement, i) {
+    const list = createElement('ul',listName,parent_DOM_Node,['child'],id)
 
     addButton(list, listElement)
-    deleteButton(list, parentList, i)
-    moveButton(list, i, parentList, listElement)
+    deleteButton(list, parentListElement, i)
+    moveButton(list, i, parentListElement, listElement)
     hideButton(list)
     
     return list
 }
 
 // Task rendering function
-function renderTask(taskName, parent, id, listElement, parentList, i) {
-    const task = createElement('ul',taskName,parent,['child'],id)
+function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElement, i) {
+    const task = createElement('ul',taskName,parent_DOM_Node,['child'],id)
 
     
     checkBox(task, listElement)
-    deleteButton(task, parentList, i)
-    moveButton(task, i, parentList, listElement)
+    deleteButton(task, parentListElement, i)
+    moveButton(task, i, parentListElement, listElement)
     hideButton(task)
     showDetailsButton(task, listElement)
+    editButton()
     
     // const details = createElement('p',
     // `${element.description}`,task,['child'])
