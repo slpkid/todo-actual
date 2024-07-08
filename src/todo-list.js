@@ -12,9 +12,11 @@ const List = class List {
         this.transferTask = (taskNumber,newList) => {
             newList.contents.push(this.contents[taskNumber]);
             this.deleteTask(taskNumber);
+            this.isOpened = true
         },
         this.appendTask = (task) => {
             this.contents.push(task)
+            this.isOpened = true
         }
         this.editName = (newName) => {
             this.name = newName
@@ -22,6 +24,8 @@ const List = class List {
         this.editTask = (taskNumber, name, description, dueDate, priority) => {
             this.contents[taskNumber].editDetails(name, description, dueDate, priority)
         }
+        this.showList = true,
+        this.hasRenderedOnce = false
     }
 }
 
@@ -47,6 +51,7 @@ const createTask = class Task {
             this.priority = priority,
             this.isComplete = isComplete
         }
+        this.showDetails = false
     }
 }
 

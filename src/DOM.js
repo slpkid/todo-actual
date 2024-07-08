@@ -35,7 +35,7 @@ function renderToDo(listElement, parent_DOM_Node, j = 0, idArray = [], firstRan 
 
 // creates a button to create new tasks or lists 
 function addButton(DOM_Node, listElement) {
-    const addButton = createElement('button','+',DOM_Node)
+    const addButton = createElement('button','+',DOM_Node,['add-button'])
 
     addButton.addEventListener('click', e => {
         const queryItem = prompt('Create new list?')
@@ -189,7 +189,7 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
 function showDetailsButton(DOM_Node, listElement) {
     const details = createElement('p','details',DOM_Node,['details'])
     const detailsButton = createElement('button','+',details)
-    let showDetails = false
+    let showDetails = listElement.showDetails
 
     if (listElement.description) {
         createElement('p','Description: ',details,['details'])
@@ -217,27 +217,37 @@ function showDetailsButton(DOM_Node, listElement) {
     }
 
     const detailsArray = details.querySelectorAll('.details')
-
-    detailsArray.forEach ( e => {
-        e.style.display = 'none'
+        
+    detailsArray.forEach(e => {
+        if (showDetails === false) {
+            detailsButton.textContent = '+'
+            e.style.display = 'none'
+        } else if (showDetails === true){
+            detailsButton.textContent = '-'
+            e.style.display = ''
+        }
     })
-
+    
     detailsButton.addEventListener('click', e => {
         const hideArray = details.querySelectorAll('.details')
         if (showDetails === false) {
             detailsButton.textContent = '-'
+            hideArray.forEach ( thing => {
+                thing.style.display = ''
+            })
             showDetails = true
-            hideArray.forEach ( e => {
-                e.style.display = ''
-            })
-        } else {
+            listElement.showDetails = true
+        } else if (showDetails === false) {
             detailsButton.textContent = '+'
-            showDetails = false
-            hideArray.forEach ( e => {
-                e.style.display = 'none'
+            hideArray.forEach ( thing => {
+                thing.style.display = 'none'
             })
+            showDetails = false
+            listElement.showDetails = false
         }
     })
+    
+        
     editButton(details, listElement, DOM_Node)
 
 
@@ -325,30 +335,57 @@ function moveButton(DOM_Node, i, parentListElement, element) {
     })
 }
 
-function hideButton(DOM_Node) {
-    const hideButton = createElement('button','hide',DOM_Node)
+function hideButton(DOM_Node, listElement, parentListElement) {
+    const hideButton = createElement('button','hide',DOM_Node,['hide-button'])
+    let showList = listElement.showList
+
+    if (showList === false) {
+        console.log('change hide button text to \'show\'')
+        console.log(hideButton)
+        hideButton.textContent = 'show'
+    }
+
     hideButton.addEventListener('click', e => {
-      const children = DOM_Node.querySelectorAll('.child')
-      children.forEach( child => {
-        if (!child.style.display) {
-          child.style.display = 'none'
-          hideButton.textContent = 'show'
-        } else if (child.style.display = 'none') {
-            child.style.display= ''
+        const childrenArray = DOM_Node.querySelectorAll('.child')
+
+        if (showList === false) {
             hideButton.textContent = 'hide'
+            childrenArray.forEach (child => {
+                child.style.display = ''
+            })
+            showList = true
+            listElement.showList = true
+        } else if (showList === true) {
+            hideButton.textContent = 'show'
+            childrenArray.forEach (child => {
+                child.style.display = 'none'
+            })
+            showList = false
+            listElement.showList = false
         }
-      })
     })
+    listElement.hasRenderedOnce = true
 }
 
 //List rendering function
 function renderList(listName, parent_DOM_Node, id, listElement, parentListElement, i) {
-    const list = createElement('ul',listName,parent_DOM_Node,['child'],id)
-    
+    const list = createElement('ul','',parent_DOM_Node,['child'],id)
+
     addButton(list, listElement)
+
+    const name = document.createElement('span')
+    const add = list.querySelector('.add-button')
+    name.textContent = listElement.name
+    name.classList.add('name')
+    add.before(name)
+    
     deleteButton(list, parentListElement, i)
     moveButton(list, i, parentListElement, listElement)
-    hideButton(list)
+    hideButton(list, listElement, parentListElement)
+
+    if (parentListElement.showList === false) {
+        list.style.display = 'none'
+    }
   
     return list
 }
@@ -358,24 +395,30 @@ function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElemen
     const task = createElement('ul','',parent_DOM_Node,['child'],id)
 
     
+    
     checkBox(task, listElement)
-
+    
     const name = document.createElement('span')
     const checkbox = task.querySelector('.checkbox')
     name.textContent = listElement.name
     name.classList.add('details')
     name.classList.add('name')
     checkbox.before(name)  
-
+    
     deleteButton(task, parentListElement, i)
     moveButton(task, i, parentListElement, listElement)
-    hideButton(task)
+    // hideButton(task)
     showDetailsButton(task, listElement)
+
+    const hideButtonElement = task.querySelector('.hide-button')
     
     // const details = createElement('p',
     // `${element.description}`,task,['child'])
-
-
+    
+    
+    if (parentListElement.showList === false) {
+        task.style.display = 'none'
+    }
 
     return task
 }
