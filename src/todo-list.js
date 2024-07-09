@@ -21,8 +21,8 @@ const List = class List {
         this.editName = (newName) => {
             this.name = newName
         }
-        this.editTask = (taskNumber, name, description, dueDate, priority) => {
-            this.contents[taskNumber].editDetails(name, description, dueDate, priority)
+        this.editTask = (taskNumber, name, description, dueDate, priority, isComplete) => {
+            this.contents[taskNumber].editDetails(name, description, dueDate, priority, isComplete)
         }
         this.showList = true,
         this.hasRenderedOnce = false
@@ -50,7 +50,7 @@ const createTask = class Task {
             this.dueDate = dueDate,
             this.priority = priority,
             this.isComplete = isComplete
-        }
+        },
         this.showDetails = false
     }
 }

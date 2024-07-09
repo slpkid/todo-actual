@@ -75,10 +75,10 @@ function checkBox(DOM_Node, listElement) {
     const checkBox = createElement('input','',DOM_Node,['checkbox'])
     // check to see if task has been completed, if yes then render as checked
     checkBox.type = 'checkbox'    
-    if (listElement.isComplete == true) {
+    if (listElement.isComplete === true) {
         checkBox.checked = true
     }
-    if (listElement.isComplete == false) {
+    if (listElement.isComplete === false) {
         checkBox.checked = false
     }
     // calls function to toggle completion status
@@ -91,12 +91,22 @@ function checkBox(DOM_Node, listElement) {
 
 //allows user to edit details
 function editButton(DOM_Node, listElement, parent_DOM_Node) {
-    const editButton = createElement('button','edit',DOM_Node)
+    const editButton = createElement('button','edit',DOM_Node,['edit-button'])
     const editArray = DOM_Node.querySelectorAll('.details')
+
+    // place the button next to the element
+    DOM_Node.before(editButton)
     
     // render each p element as an input
     let isEditing = false
     editButton.addEventListener('click', e => {
+        editButton.textContent = 'save'
+
+        DOM_Node.querySelector('.show-details-button').textContent = '-'
+        listElement.showDetails = true
+
+        // console.log(listElement.showDetails)
+        
         if (isEditing === false) {
             editArray.forEach ( e => {
                 e.remove()
@@ -188,8 +198,10 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
 // shows or hides details about each list or task
 function showDetailsButton(DOM_Node, listElement) {
     const details = createElement('p','details',DOM_Node,['details'])
-    const detailsButton = createElement('button','+',details)
+    const detailsButton = createElement('button','+',details,['show-details-button'])
     let showDetails = listElement.showDetails
+
+    // console.log(listElement.showDetails)
 
     if (listElement.description) {
         createElement('p','Description: ',details,['details'])
