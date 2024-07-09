@@ -269,18 +269,31 @@ function moveButton(DOM_Node, i, parentListElement, element) {
     }
     const moveButton = createElement('button', 'move', DOM_Node,[`${listOrTask}`])
     moveButton.addEventListener('click', e => {
-        // make an array of the 
+        // make an array of the task move buttons
         const taskMoveButtons = document.querySelectorAll('.taskMoveButton')
-
+        // make array of the list move buttons
+        const listMoveButtons = DOM_Node.querySelectorAll('.listMoveButton')
+        
         // on the first call, set the chosen element as the moveTarget
         if (moveTarget === undefined) {
             moveTarget = i
             moveTargetParentList = parentListElement
             
+            
             // hide taskMoveButtons
             taskMoveButtons.forEach(button => {
                 button.style.display = 'none'
             })
+
+            if (moveTargetParentList.contents[moveTarget]) {
+    
+                // hide listMoveButtons
+                listMoveButtons.forEach(button => {
+                    button.style.display = 'none'
+                })
+            }
+            moveButton.style.display = ''
+            moveButton.textContent = 'cancel'
 
             return
         } else {
@@ -294,6 +307,10 @@ function moveButton(DOM_Node, i, parentListElement, element) {
                 taskMoveButtons.forEach(button => {
                     button.style.display = ''
                 })
+                listMoveButtons.forEach(button => {
+                    button.style.display = ''
+                })
+                moveButton.textContent = 'move'
             }
             // check to see if the destination target lies within the contents of moveTarget 
             let targetIsChildList = false
@@ -305,7 +322,6 @@ function moveButton(DOM_Node, i, parentListElement, element) {
                             targetIsChildList = true
                             return
                         }
-                        console.log(e)
                         if (e.contents) {
                             targetIsChildListFunc(e)
                         }
