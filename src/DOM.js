@@ -40,15 +40,27 @@ function addButton(DOM_Node, listElement) {
     addButton.addEventListener('click', e => {
         const queryItem = prompt('Create new list?')
         if (queryItem === 'yes') {
+            if (queryItem === undefined||queryItem === null || queryItem === '') {
+                return
+            }
             listElement.appendTask(new List(prompt('Enter desired list name.')))
-            console.log(toDoLibrary)
         } else {
-            listElement.appendTask(new Task(
-                prompt('Enter Task Name.'),
-                prompt('Enter Description.'),
-                prompt('Enter Due Date.'),
-                prompt('Choose Priority.')
-            ))
+            const name = prompt('Enter Task Name.')
+            if (name === undefined||name === null || name === '') {
+                return
+            }
+            const description = prompt('Enter Description.')
+            const dueDate = prompt('Enter Due Date.')
+            const priority = prompt('Choose Priority.')
+
+            function nah(arg) {
+                if (arg === undefined ||arg ===  null ||arg ===  '') {
+                arg = 'N/A'
+                }
+                return arg
+            }
+
+            listElement.appendTask(new Task(name,nah(description),nah(dueDate),nah(priority)))
         }
         unRenderDOM()
         renderToDo(toDoLibrary, TO_DO_DOM)
@@ -126,13 +138,6 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
             checkbox.before(name)
             name.value = listElement.name
 
-            
-            // parent_DOM_Node.visibility = 'hidden'
-
-            // parent_DOM_Node.childNodes.forEach( e => {
-            //     console.log(e)
-            // })
-
             createElement('p','Description: ',DOM_Node,['details'])
             const description = createElement('input',`${listElement.description}`,DOM_Node,['details','description','edit'])
             description.value = listElement.description
@@ -195,26 +200,33 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
     })
 }
 
+// creates a button that edits the name of a list
 function editListNameButton (DOM_Node, listElement) {
+    // create the button and name elements
     const editListNameButton = createElement('button','edit name',DOM_Node,['edit-list-name-button'])
-
     const spanName = DOM_Node.querySelector('.name')
 
     let isEditingName = false
 
     editListNameButton.addEventListener('click', e => {
         if (isEditingName === false) {
+            // change the edit text to "save"
             editListNameButton.textContent = 'save'
+            // create the text input box
             const newNameInput = document.createElement('input')
             newNameInput.value = listElement.name
             newNameInput.classList.add('new-name-input')
             spanName.before(newNameInput)
+            // hide the old name
             spanName.style.display = 'none'
             isEditingName = true
         } else if (isEditingName === true) {
+            // get the new name value
             const newNameInput = DOM_Node.querySelector('.new-name-input')
+            // invoke the edit method on the list
             listElement.editName(newNameInput.value)
             isEditingName = false
+            // render
             unRenderDOM()
             renderToDo(toDoLibrary, TO_DO_DOM)
         }
@@ -289,6 +301,7 @@ function showDetailsButton(DOM_Node, listElement) {
     return detailsArray
 }
 
+//variables to control the moveButton functionality.
 let moveTarget
 let moveTargetParentList
 let moveTargetDestination
@@ -386,7 +399,7 @@ function moveButton(DOM_Node, i, parentListElement, element) {
     })
 }
 
-function hideButton(DOM_Node, listElement, parentListElement) {
+function hideButton(DOM_Node, listElement) {
     const hideButton = createElement('button','hide',DOM_Node,['hide-button'])
     let showList = listElement.showList
 
@@ -424,6 +437,7 @@ function renderList(listName, parent_DOM_Node, id, listElement, parentListElemen
 
     addButton(list, listElement)
 
+    // create a span that contains the name list's name
     const name = document.createElement('span')
     const add = list.querySelector('.add-button')
     name.textContent = listElement.name
@@ -432,7 +446,7 @@ function renderList(listName, parent_DOM_Node, id, listElement, parentListElemen
     
     deleteButton(list, parentListElement, i)
     moveButton(list, i, parentListElement, listElement)
-    hideButton(list, listElement, parentListElement)
+    hideButton(list, listElement)
     editListNameButton(list, listElement)
 
     if (parentListElement.showList === false) {
@@ -444,12 +458,11 @@ function renderList(listName, parent_DOM_Node, id, listElement, parentListElemen
 
 // Task rendering function
 function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElement, i) {
-    const task = createElement('ul','',parent_DOM_Node,['child'],id)
-
-    
+    const task = createElement('ul','',parent_DOM_Node,['child'],id)    
     
     checkBox(task, listElement)
     
+    // create a span that contains the name task's name
     const name = document.createElement('span')
     const checkbox = task.querySelector('.checkbox')
     name.textContent = listElement.name
@@ -459,14 +472,9 @@ function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElemen
     
     deleteButton(task, parentListElement, i)
     moveButton(task, i, parentListElement, listElement)
-    // hideButton(task)
     showDetailsButton(task, listElement)
 
-    const hideButtonElement = task.querySelector('.hide-button')
-    
-    // const details = createElement('p',
-    // `${element.description}`,task,['child'])
-    
+    const hideButtonElement = task.querySelector('.hide-button')    
     
     if (parentListElement.showList === false) {
         task.style.display = 'none'
