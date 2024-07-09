@@ -237,7 +237,7 @@ function showDetailsButton(DOM_Node, listElement) {
             })
             showDetails = true
             listElement.showDetails = true
-        } else if (showDetails === false) {
+        } else if (showDetails === true) {
             detailsButton.textContent = '+'
             hideArray.forEach ( thing => {
                 thing.style.display = 'none'
