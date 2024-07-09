@@ -35,7 +35,7 @@ function renderToDo(listElement, parent_DOM_Node, j = 0, idArray = [], firstRan 
 
 // creates a button to create new tasks or lists 
 function addButton(DOM_Node, listElement) {
-    const addButton = createElement('button','+',DOM_Node,['add-button'])
+    const addButton = createElement('button','new',DOM_Node,['add-button'])
 
     addButton.addEventListener('click', e => {
         const queryItem = prompt('Create new list?')
