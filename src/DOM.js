@@ -100,12 +100,12 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
     // render each p element as an input
     let isEditing = false
     editButton.addEventListener('click', e => {
+        // change text to "save" since we're editing now
         editButton.textContent = 'save'
 
+        // setting the list to expanded in the object
         DOM_Node.querySelector('.show-details-button').textContent = '-'
         listElement.showDetails = true
-
-        // console.log(listElement.showDetails)
         
         if (isEditing === false) {
             editArray.forEach ( e => {
@@ -189,6 +189,7 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
             listElement.editDetails(name,description,dueDate,priority,isComplete)
 
             isEditing = false
+            // listElement.showDetails = false
             unRenderDOM()
             renderToDo(toDoLibrary, TO_DO_DOM)
         }
@@ -199,7 +200,6 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
 function showDetailsButton(DOM_Node, listElement) {
     const details = createElement('p','details',DOM_Node,['details'])
     const detailsButton = createElement('button','+',details,['show-details-button'])
-    let showDetails = listElement.showDetails
 
     // console.log(listElement.showDetails)
 
@@ -231,10 +231,10 @@ function showDetailsButton(DOM_Node, listElement) {
     const detailsArray = details.querySelectorAll('.details')
         
     detailsArray.forEach(e => {
-        if (showDetails === false) {
+        if (listElement.showDetails === false) {
             detailsButton.textContent = '+'
             e.style.display = 'none'
-        } else if (showDetails === true){
+        } else if (listElement.showDetails === true){
             detailsButton.textContent = '-'
             e.style.display = ''
         }
@@ -242,19 +242,17 @@ function showDetailsButton(DOM_Node, listElement) {
     
     detailsButton.addEventListener('click', e => {
         const hideArray = details.querySelectorAll('.details')
-        if (showDetails === false) {
+        if (listElement.showDetails === false) {
             detailsButton.textContent = '-'
             hideArray.forEach ( thing => {
                 thing.style.display = ''
             })
-            showDetails = true
             listElement.showDetails = true
-        } else if (showDetails === true) {
+        } else if (listElement.showDetails === true) {
             detailsButton.textContent = '+'
             hideArray.forEach ( thing => {
                 thing.style.display = 'none'
             })
-            showDetails = false
             listElement.showDetails = false
         }
     })
