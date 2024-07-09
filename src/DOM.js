@@ -189,7 +189,32 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
             listElement.editDetails(name,description,dueDate,priority,isComplete)
 
             isEditing = false
-            // listElement.showDetails = false
+            unRenderDOM()
+            renderToDo(toDoLibrary, TO_DO_DOM)
+        }
+    })
+}
+
+function editListNameButton (DOM_Node, listElement) {
+    const editListNameButton = createElement('button','edit name',DOM_Node,['edit-list-name-button'])
+
+    const spanName = DOM_Node.querySelector('.name')
+
+    let isEditingName = false
+
+    editListNameButton.addEventListener('click', e => {
+        if (isEditingName === false) {
+            editListNameButton.textContent = 'save'
+            const newNameInput = document.createElement('input')
+            newNameInput.value = listElement.name
+            newNameInput.classList.add('new-name-input')
+            spanName.before(newNameInput)
+            spanName.style.display = 'none'
+            isEditingName = true
+        } else if (isEditingName === true) {
+            const newNameInput = DOM_Node.querySelector('.new-name-input')
+            listElement.editName(newNameInput.value)
+            isEditingName = false
             unRenderDOM()
             renderToDo(toDoLibrary, TO_DO_DOM)
         }
@@ -408,6 +433,7 @@ function renderList(listName, parent_DOM_Node, id, listElement, parentListElemen
     deleteButton(list, parentListElement, i)
     moveButton(list, i, parentListElement, listElement)
     hideButton(list, listElement, parentListElement)
+    editListNameButton(list, listElement)
 
     if (parentListElement.showList === false) {
         list.style.display = 'none'
