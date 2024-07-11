@@ -41,7 +41,7 @@ const List = class List {
         this.moveTaskDown = (taskNumber) => {
             const taskDestination = taskNumber + 1
             if (taskDestination === this.contents.length) {
-                console.log('can\'t move any lower!')
+                return
             } else {
                 const f = this.contents.splice(taskNumber,1)[0]
                 this.contents.splice(taskDestination,0,f)

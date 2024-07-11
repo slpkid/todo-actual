@@ -445,12 +445,28 @@ function hideButton(DOM_Node, listElement) {
     listElement.hasRenderedOnce = true
 }
 
-function upButton(DOM_Node, listElement, parentListElement) {
+function upButton(DOM_Node, listElement, parentListElement, i) {
+    const upButton = createElement('button','^',DOM_Node,['up-button'])
 
+    upButton.addEventListener('click', e => {
+        parentListElement.moveTaskUp(i)
+        unRenderDOM()
+        renderToDo(toDoLibrary, TO_DO_DOM)
+        // save data to local storage
+        saveData(toDoLibrary)
+    })
 }
 
-function downButton(DOM_Node, listElement, parentListElement) {
-    
+function downButton(DOM_Node, listElement, parentListElement, i) {
+    const downButton = createElement('button','v',DOM_Node,['down-button'])
+
+    downButton.addEventListener('click', e => {
+        parentListElement.moveTaskDown(i)
+        unRenderDOM()
+        renderToDo(toDoLibrary, TO_DO_DOM)
+        // save data to local storage
+        saveData(toDoLibrary)
+    })
 }
 
 //List rendering function
@@ -468,6 +484,8 @@ function renderList(listName, parent_DOM_Node, id, listElement, parentListElemen
     
     deleteButton(list, parentListElement, i)
     moveButton(list, i, parentListElement, listElement)
+    upButton(list,listElement,parentListElement, i)
+    downButton(list,listElement,parentListElement, i)
     hideButton(list, listElement)
     editListNameButton(list, listElement)
 
@@ -494,6 +512,8 @@ function renderTask(taskName, parent_DOM_Node, id, listElement, parentListElemen
     
     deleteButton(task, parentListElement, i)
     moveButton(task, i, parentListElement, listElement)
+    upButton(task,listElement,parentListElement, i)
+    downButton(task,listElement,parentListElement, i)
     showDetailsButton(task, listElement)
 
     const hideButtonElement = task.querySelector('.hide-button')    
