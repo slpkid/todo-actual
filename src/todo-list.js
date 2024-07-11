@@ -24,9 +24,30 @@ const List = class List {
         this.editTask = (taskNumber, name, description, dueDate, priority, isComplete) => {
             this.contents[taskNumber].editDetails(name, description, dueDate, priority, isComplete)
         },
+
         this.showList = true,
         this.hasRenderedOnce = false,
-        this.type = 'list'
+        this.type = 'list',
+        this.moveTaskUp = (taskNumber) => {
+            const taskDestination = taskNumber - 1
+            if (taskDestination === -1) {
+                return
+            } else {
+                const f = this.contents.splice(taskNumber,1)[0]
+                this.contents.splice(taskDestination,0,f)
+                return
+            }
+        },
+        this.moveTaskDown = (taskNumber) => {
+            const taskDestination = taskNumber + 1
+            if (taskDestination === this.contents.length) {
+                console.log('can\'t move any lower!')
+            } else {
+                const f = this.contents.splice(taskNumber,1)[0]
+                this.contents.splice(taskDestination,0,f)
+                return
+            }
+        }
     }
 }
 
