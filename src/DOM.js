@@ -292,17 +292,18 @@ function showDetailsButton(DOM_Node, listElement) {
                 thing.style.display = ''
             })
             listElement.showDetails = true
+            // save data to local storage
+            saveData(toDoLibrary)
         } else if (listElement.showDetails === true) {
             detailsButton.textContent = '+'
             hideArray.forEach ( thing => {
                 thing.style.display = 'none'
             })
             listElement.showDetails = false
+            // save data to local storage
+            saveData(toDoLibrary)
         }
     })
-    
-    // save data to local storage
-    saveData(toDoLibrary)
     
     editButton(details, listElement, DOM_Node)
     saveData(toDoLibrary)
@@ -416,8 +417,6 @@ function hideButton(DOM_Node, listElement) {
     let showList = listElement.showList
 
     if (showList === false) {
-        console.log('change hide button text to \'show\'')
-        console.log(hideButton)
         hideButton.textContent = 'show'
     }
 
@@ -439,9 +438,10 @@ function hideButton(DOM_Node, listElement) {
             showList = false
             listElement.showList = false
         }
+        // save data to local storage
+        saveData(toDoLibrary)
     })
-    // save data to local storage
-    saveData(toDoLibrary)
+
     listElement.hasRenderedOnce = true
 }
 
