@@ -1,0 +1,12 @@
+
+// stringifies an object and saves it in localStorage.
+function saveObjectToLocalStorage(object) {
+    localStorage.setItem(`${object.name}`,JSON.stringify(object))
+}
+
+// retrieves an object from local storage 
+function parseStringFromLocalStorage(stringName) {
+    return JSON.parse(localStorage.getItem(stringName))
+}
+
+export { saveObjectToLocalStorage, parseStringFromLocalStorage }

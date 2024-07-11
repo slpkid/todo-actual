@@ -1,7 +1,8 @@
 import { createElement, returnElementByID } from "./createElement"
 import { TO_DO_LIBRARY as toDoLibrary } from "./todo-list";
 import { parseListPos } from "./evalString";
-import { List, createTask as Task } from "./todo-list";
+import { List, Task } from "./todo-list";
+import { parseStringFromLocalStorage as loadData, saveObjectToLocalStorage as saveData } from "./localStorage";
 
 const TO_DO_DOM = document.getElementById('to-do-library')
 
@@ -62,6 +63,7 @@ function addButton(DOM_Node, listElement) {
 
             listElement.appendTask(new Task(name,nah(description),nah(dueDate),nah(priority)))
         }
+        saveData(toDoLibrary)
         unRenderDOM()
         renderToDo(toDoLibrary, TO_DO_DOM)
     })
@@ -79,6 +81,8 @@ function deleteButton(DOM_Node, parentListElement, i) {
         unRenderDOM()
         renderToDo(toDoLibrary, TO_DO_DOM)
     })
+    saveData(toDoLibrary)
+    
     return deleteButton
 }
 
@@ -96,6 +100,7 @@ function checkBox(DOM_Node, listElement) {
     // calls function to toggle completion status
     checkBox.addEventListener('click', e => {
         listElement.completeTask()
+        saveData(toDoLibrary)
         unRenderDOM()
         renderToDo(toDoLibrary, TO_DO_DOM)
     })
@@ -194,6 +199,7 @@ function editButton(DOM_Node, listElement, parent_DOM_Node) {
             listElement.editDetails(name,description,dueDate,priority,isComplete)
 
             isEditing = false
+            saveData(toDoLibrary)
             unRenderDOM()
             renderToDo(toDoLibrary, TO_DO_DOM)
         }
@@ -227,6 +233,7 @@ function editListNameButton (DOM_Node, listElement) {
             listElement.editName(newNameInput.value)
             isEditingName = false
             // render
+            saveData(toDoLibrary)
             unRenderDOM()
             renderToDo(toDoLibrary, TO_DO_DOM)
         }
@@ -294,9 +301,11 @@ function showDetailsButton(DOM_Node, listElement) {
         }
     })
     
-        
+    // save data to local storage
+    saveData(toDoLibrary)
+    
     editButton(details, listElement, DOM_Node)
-
+    saveData(toDoLibrary)
 
     return detailsArray
 }
@@ -388,6 +397,9 @@ function moveButton(DOM_Node, i, parentListElement, element) {
             unRenderDOM()
             renderToDo(toDoLibrary, TO_DO_DOM)
 
+            // save data to local storage
+            saveData(toDoLibrary)
+
             // reinitialize variables and unhide taskMoveButtons
             moveTarget = undefined
             moveTargetParentList = undefined
@@ -428,6 +440,8 @@ function hideButton(DOM_Node, listElement) {
             listElement.showList = false
         }
     })
+    // save data to local storage
+    saveData(toDoLibrary)
     listElement.hasRenderedOnce = true
 }
 
