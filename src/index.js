@@ -1,7 +1,7 @@
 import { Task, TO_DO_LIBRARY as toDoLibrary, List, addListFunctions, addTaskFunctions } from "./todo-list";
 import { renderToDo, TO_DO_DOM } from "./DOM";
 import { parseNewList } from "./convertJSON";
-import { saveObjectToLocalStorage, parseStringFromLocalStorage as loadData } from "./localStorage";
+import { saveObjectToLocalStorage as saveData, parseStringFromLocalStorage as loadData } from "./localStorage";
 
 // const makeBed = new Task('Make Bed', 'clean your bed', '6/23/2023', 'high')
 // const cleanDishes = new Task('Clean Dishes', 'Load dishes into dishwasher and run the load.', '6/23/2023', 'high')
@@ -40,6 +40,10 @@ import { saveObjectToLocalStorage, parseStringFromLocalStorage as loadData } fro
 // toDoLibrary.editTask(2, 'Don\'t eat afternoon snack', '', '2/23/7272', 'medium', false)
 
 //read saved to do list data
+if (loadData('ToDo') === null) {
+    saveData(toDoLibrary)
+}
+
 parseNewList(loadData('ToDo'),toDoLibrary)
 
 //render data

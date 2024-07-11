@@ -80,8 +80,8 @@ function deleteButton(DOM_Node, parentListElement, i) {
         // clear DOM, then render
         unRenderDOM()
         renderToDo(toDoLibrary, TO_DO_DOM)
+        saveData(toDoLibrary)
     })
-    saveData(toDoLibrary)
     
     return deleteButton
 }
@@ -443,6 +443,14 @@ function hideButton(DOM_Node, listElement) {
     })
 
     listElement.hasRenderedOnce = true
+}
+
+function upButton(DOM_Node, listElement, parentListElement) {
+
+}
+
+function downButton(DOM_Node, listElement, parentListElement) {
+    
 }
 
 //List rendering function
